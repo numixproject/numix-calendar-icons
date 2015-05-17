@@ -1,0 +1,42 @@
+#!/bin/bash
+
+day=`date +'%d'`
+
+cuser="${SUDO_USER:-$USER}"
+circle=true
+if [ -d /home/"$cuser"/.local/share/icons/Numix-Circle/ ]; then
+    dir=/home/"$cuser"/.local/share/icons/Numix-Circle/48x48/apps
+elif [ -d /home/"$cuser"/.icons/Numix-Circle/ ]; then
+    dir=/home/"$cuser"/.icons/Numix-Circle/48x48/apps
+elif [ -d /usr/share/icons/Numix-Circle/ ]; then
+     dir=/usr/share/icons/Numix-Circle/48x48/apps
+else
+    circle=false
+fi
+
+base=true
+if [ -d /home/"$cuser"/.local/share/icons/Numix/ ]; then
+    dir2=/home/"$cuser"/.local/share/icons/Numix
+elif [ -d /home/"$cuser"/.icons/Numix/ ]; then
+    dir2=/home/"$cuser"/.icons/Numix/
+elif [ -d /usr/share/icons/Numix/ ]; then
+     dir2=/usr/share/icons/Numix/
+else
+    base=false
+fi
+
+if $circle; then 
+    cd $dir
+    ln -sf calendar-blue-$day.svg google-calendar.svg
+    ln -sf calendar-red-$day.svg office-calendar.svg
+fi
+
+if $base; then 
+    cd $dir2
+    places=`find . -name "places" -type d`
+    for place in $places
+        do
+            cd $dir2$place
+            ln -sf calendar-$day.svg calendar.svg
+        done
+fi
