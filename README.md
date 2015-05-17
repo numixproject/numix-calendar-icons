@@ -1,7 +1,7 @@
-# numix-calendar-icons
+# Calendar Icons
 This script will change the calendar icons in the numix theme(s), to represent the current date.
 
-# Usage
+## Usage
 1. Download this script and place it somewhere.
 2. Download and install a cron daemon (preferably `anachron` or `fcron` or the standard `cron` daemon if your computer is running 24/7)
 3. 
