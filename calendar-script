@@ -5,11 +5,11 @@ day=`date +'%d'`
 cuser="${SUDO_USER:-$USER}"
 circle=true
 if [ -d /home/"$cuser"/.local/share/icons/Numix-Circle/ ]; then
-    dir=/home/"$cuser"/.local/share/icons/Numix-Circle/48x48/apps
+    dir=/home/"$cuser"/.local/share/icons/Numix-Circle/
 elif [ -d /home/"$cuser"/.icons/Numix-Circle/ ]; then
-    dir=/home/"$cuser"/.icons/Numix-Circle/48x48/apps
+    dir=/home/"$cuser"/.icons/Numix-Circle/
 elif [ -d /usr/share/icons/Numix-Circle/ ]; then
-     dir=/usr/share/icons/Numix-Circle/48x48/apps
+     dir=/usr/share/icons/Numix-Circle/
 else
     circle=false
 fi
@@ -26,9 +26,10 @@ else
 fi
 
 if $circle; then 
-    cd $dir
+    cd $dir"48x48/apps"
     ln -sf calendar-blue-$day.svg google-calendar.svg
     ln -sf calendar-red-$day.svg office-calendar.svg
+    gtk-update-icon-cache --force $dir
 fi
 
 if $base; then 
@@ -39,4 +40,5 @@ if $base; then
             cd $dir2$place
             ln -sf calendar-$day.svg calendar.svg
         done
+    gtk-update-icon-cache --force $dir2
 fi
