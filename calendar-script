@@ -1,6 +1,6 @@
 #!/bin/bash
 
-day=`date +'%d'`
+day=$(date +'%d')
 
 cuser="${SUDO_USER:-$USER}"
 circle=true
@@ -26,20 +26,20 @@ else
 fi
 
 if $circle; then 
-    cd $dir"48x48/apps"
-    ln -sf calendar-blue-$day.svg google-calendar.svg
-    ln -sf calendar-purple-$day.svg ms-calendar.svg
-    ln -sf calendar-red-$day.svg office-calendar.svg
+    cd $dir"48x48/apps" || exit
+    ln -sf calendar-blue-"$day".svg google-calendar.svg
+    ln -sf calendar-purple-"$day".svg ms-calendar.svg
+    ln -sf calendar-red-"$day".svg office-calendar.svg
     gtk-update-icon-cache --force $dir
 fi
 
 if $base; then 
-    cd $dir2
-    places=`find . -name "places" -type d`
+    cd $dir2 || exit
+    places=$(find . -name "places" -type d)
     for place in $places
         do
-            cd $dir2$place
-            ln -sf calendar-$day.svg calendar.svg
+            cd "$dir2$place" || exit
+            ln -sf calendar-"$day".svg calendar.svg
         done
     gtk-update-icon-cache --force $dir2
 fi
