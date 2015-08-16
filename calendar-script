@@ -28,6 +28,7 @@ fi
 if $circle; then 
     cd $dir"48x48/apps"
     ln -sf calendar-blue-$day.svg google-calendar.svg
+    ln -sf calendar-purple-$day.svg ms-calendar.svg
     ln -sf calendar-red-$day.svg office-calendar.svg
     gtk-update-icon-cache --force $dir
 fi
