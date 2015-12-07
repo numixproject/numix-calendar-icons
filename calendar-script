@@ -35,7 +35,7 @@ fi
 
 if $base; then 
     cd $dir2 || exit
-    places=$(find . -name "places" -type d)
+    places=$(find . -name "places" -type d ! -path "*/scalable/*")
     for place in $places
         do
             cd "$dir2$place" || exit
