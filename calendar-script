@@ -1,45 +1,45 @@
 #!/bin/bash
 
 day=$(date +'%d')
-
 cuser="${SUDO_USER:-$USER}"
-circle=true
-if [ -d /home/"$cuser"/.local/share/icons/Numix-Circle/ ]; then
-    dir=/home/"$cuser"/.local/share/icons/Numix-Circle/
-elif [ -d /home/"$cuser"/.icons/Numix-Circle/ ]; then
-    dir=/home/"$cuser"/.icons/Numix-Circle/
-elif [ -d /usr/share/icons/Numix-Circle/ ]; then
-     dir=/usr/share/icons/Numix-Circle/
-else
-    circle=false
-fi
+function theme_installed_directory {
+    if [ -d /home/"$cuser"/.local/share/icons/"$1"/ ]; then
+        dir=/home/"$cuser"/.local/share/icons/"$1"/
+    elif [ -d /home/"$cuser"/.icons/"$1"/ ]; then
+        dir=/home/"$cuser"/.icons/"$1"/
+    elif [ -d /usr/share/icons/"$1"/ ]; then
+         dir=/usr/share/icons/"$1"/
+    else
+        dir=false
+    fi
+    echo "$dir"
+}
 
-base=true
-if [ -d /home/"$cuser"/.local/share/icons/Numix/ ]; then
-    dir2=/home/"$cuser"/.local/share/icons/Numix
-elif [ -d /home/"$cuser"/.icons/Numix/ ]; then
-    dir2=/home/"$cuser"/.icons/Numix/
-elif [ -d /usr/share/icons/Numix/ ]; then
-     dir2=/usr/share/icons/Numix/
-else
-    base=false
-fi
+function apply_on_icon_theme {
+    if [ -d "$1" ]; then 
+        cd "$1""48/apps" || exit
+        ln -sf calendar-blue-"$day".svg google-calendar.svg
+        ln -sf calendar-purple-"$day".svg ms-calendar.svg
+        ln -sf calendar-red-"$day".svg office-calendar.svg
+        gtk-update-icon-cache --force "$1"
+    fi
+}
 
-if $circle; then 
-    cd $dir"48x48/apps" || exit
-    ln -sf calendar-blue-"$day".svg google-calendar.svg
-    ln -sf calendar-purple-"$day".svg ms-calendar.svg
-    ln -sf calendar-red-"$day".svg office-calendar.svg
-    gtk-update-icon-cache --force $dir
-fi
 
-if $base; then 
-    cd $dir2 || exit
+circle_dir=$(theme_installed_directory "Numix-Circle")
+square_dir=$(theme_installed_directory "Numix-Square")
+base_dir=$(theme_installed_directory "Numix")
+
+apply_on_icon_theme "$circle_dir"
+apply_on_icon_theme "$square_dir"
+
+if [ -d "$base_dir" ]; then 
+    cd $base_dir || exit
     places=$(find . -name "places" -type d ! -path "*/scalable/*")
     for place in $places
         do
-            cd "$dir2$place" || exit
+            cd "$base_dir$place" || exit
             ln -sf calendar-"$day".svg calendar.svg
         done
-    gtk-update-icon-cache --force $dir2
+    gtk-update-icon-cache --force $base_dir
 fi
